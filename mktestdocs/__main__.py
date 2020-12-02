@@ -3,17 +3,18 @@ import pathlib
 import textwrap
 
 
-def get_class_docstrings(*classes):
+def get_codeblock_members(*classes):
     """
     Grabs the docstrings of any methods of any classes that are passed in.
     """
     results = []
     for cl in classes:
-        members = inspect.getmembers(cl)
-        for n, m in members:
-            if m.__doc__:
-                results.append((f"{cl.__name__}.{n}", m.__doc__))
-    return results
+        if cl.__doc__:
+            results.append(cl)
+        for name, member in inspect.getmembers(cl):
+            if member.__doc__:
+                results.append(member)
+    return [m for m in results if len(grab_code_blocks(m.__doc__)) > 0]
 
 
 def check_codeblock(block, lang="python"):
@@ -43,17 +44,17 @@ def grab_code_blocks(docstring, lang="python"):
     """
     docstring = textwrap.dedent(docstring)
     in_block = False
-    block = ''
+    block = ""
     codeblocks = []
     for idx, line in enumerate(docstring.split("\n")):
         if line.startswith("```"):
             if in_block:
                 codeblocks.append(check_codeblock(block, lang=lang))
-                block = ''
+                block = ""
             in_block = not in_block
         if in_block:
-            block += line + '\n'
-    return [c for c in codeblocks if c != '']
+            block += line + "\n"
+    return [c for c in codeblocks if c != ""]
 
 
 def check_docstring(obj, lang=""):
