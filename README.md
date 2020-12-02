@@ -51,3 +51,5 @@ members = get_codeblock_members(Dinosaur)
 def test_member(obj):
     check_docstring(obj)
 ```
+
+When you run these commands via `pytest --verbose` you should see informative test info being run. 
