@@ -1,4 +1,5 @@
 import inspect
+import pathlib
 import textwrap
 
 
@@ -55,14 +56,38 @@ def grab_code_blocks(docstring, lang="python"):
     return [c for c in codeblocks if c != '']
 
 
-def check_docstring(obj):
+def check_docstring(obj, lang=""):
     """
     Given a function, test the contents of the docstring.
     """
-    for b in grab_code_blocks(obj.__doc__):
+    for b in grab_code_blocks(obj.__doc__, lang=lang):
         try:
             exec(b, {"__MODULE__": "__main__"})
         except Exception:
             print(f"Error Encountered in `{obj.__name__}`. Caused by:\n")
             print(b)
             raise
+
+
+def check_raw_string(raw, lang="python"):
+    """
+    Given a raw string, test the contents.
+    """
+    for b in grab_code_blocks(raw, lang=lang):
+        try:
+            exec(b, {"__MODULE__": "__main__"})
+        except Exception:
+            print(b)
+            raise
+
+
+def check_md_file(fpath):
+    """
+    Given a markdown file, parse the contents for python code blocks
+    and check that each independant block does not cause an error.
+
+    Arguments:
+        fpath: path to markdown file
+    """
+    text = pathlib.Path(fpath).read_text()
+    check_raw_string(text, lang="python")
