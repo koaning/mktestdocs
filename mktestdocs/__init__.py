@@ -3,7 +3,7 @@ from mktestdocs.__main__ import (
     grab_code_blocks,
     check_docstring,
     check_md_file,
-    get_class_docstrings,
+    get_codeblock_members,
 )
 
 __version__ = "0.1.0"
@@ -14,5 +14,5 @@ __all__ = [
     "grab_code_blocks",
     "check_docstring",
     "check_md_file",
-    "get_class_docstrings",
+    "get_codeblock_members",
 ]
