@@ -1,6 +1,14 @@
+<img src="icon.png" width=125 height=125 align="right">
+
 # mktestdocs
 
 Run pytest against markdown files/docstrings.
+
+# Installation 
+
+```python
+pip install mktestdocs
+```
 
 ## Usage 
 
