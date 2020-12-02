@@ -1,7 +1,7 @@
 from mktestdocs import __version__
 from setuptools import setup, find_packages
 
-test_packages = ["flake8>=3.6.0", "pytest>=4.0.2", "numpy>=1.19.4", "exdown>=0.7.1"]
+test_packages = ["pytest>=4.0.2"]
 
 setup(
     name="mktestdocs",
