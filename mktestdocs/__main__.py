@@ -43,17 +43,17 @@ def grab_code_blocks(docstring, lang="python"):
     """
     docstring = textwrap.dedent(docstring)
     in_block = False
-    block = ''
+    block = ""
     codeblocks = []
     for idx, line in enumerate(docstring.split("\n")):
         if line.startswith("```"):
             if in_block:
                 codeblocks.append(check_codeblock(block, lang=lang))
-                block = ''
+                block = ""
             in_block = not in_block
         if in_block:
-            block += line + '\n'
-    return [c for c in codeblocks if c != '']
+            block += line + "\n"
+    return [c for c in codeblocks if c != ""]
 
 
 def check_docstring(obj, lang=""):

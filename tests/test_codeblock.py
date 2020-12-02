@@ -38,11 +38,19 @@ assert 1 == 1
 """
 
 
-@pytest.mark.parametrize("doc, n", [(exibit_a, 0), (exibit_b, 1), (exibit_c, 1)], ids=["exibit_a", "exibit_b", "exibit_c"])
+@pytest.mark.parametrize(
+    "doc, n",
+    [(exibit_a, 0), (exibit_b, 1), (exibit_c, 1)],
+    ids=["exibit_a", "exibit_b", "exibit_c"],
+)
 def test_number_of_codeblocks(doc, n):
     assert len(grab_code_blocks(doc, lang="python")) == n
 
 
-@pytest.mark.parametrize("doc, n", [(exibit_a, 0), (exibit_b, 1), (exibit_c, 2)], ids=["exibit_a", "exibit_b", "exibit_c"])
+@pytest.mark.parametrize(
+    "doc, n",
+    [(exibit_a, 0), (exibit_b, 1), (exibit_c, 2)],
+    ids=["exibit_a", "exibit_b", "exibit_c"],
+)
 def test_number_of_codeblocks_any(doc, n):
     assert len(grab_code_blocks(doc, lang=None)) == n
