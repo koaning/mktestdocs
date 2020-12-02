@@ -2,6 +2,12 @@
 
 Run pytest against markdown files/docstrings.
 
+# Installation 
+
+```python
+pip install mktestdocs
+```
+
 ## Usage 
 
 Let's say that you're using [mkdocs](https://squidfunk.github.io/mkdocs-material/getting-started/) for your documentation. Then you're 
