@@ -29,6 +29,10 @@ def test_files_good(fpath):
     check_md_file(fpath=fpath)
 ```
 
+This will take any codeblock that starts with *\`\`\`python* and run it, checking
+for any errors that might happen. This means that if your docs contain asserts, that
+you get some unit-tests for free! 
+
 You might also have docstrings written in markdown. Those can be easily checked
 as well. 
 
