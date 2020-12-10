@@ -23,7 +23,7 @@ import pytest
 
 from mktestdocs import check_md_file
 
-
+# Note the use of `str`, makes for pretty output
 @pytest.mark.parametrize('fpath', pathlib.Path("docs").glob("**/.md"), ids=str)
 def test_files_good(fpath):
     check_md_file(fpath=fpath)
@@ -43,6 +43,7 @@ from dinosaur import roar, super_roar
 import pytest
 from mktestdocs import check_docstring
 
+# Note the use of `__name__`, makes for pretty output
 @pytest.mark.parametrize('func', [roar, super_roar], ids=lambda d: d.__name__)
 def test_files_good(func):
     check_docstring(obj=func)
@@ -59,6 +60,7 @@ from mktestdocs import check_docstring, get_codeblock_members
 
 members = get_codeblock_members(Dinosaur)
 
+# Note the use of `__qualname__`, makes for pretty output
 @pytest.mark.parametrize("obj", members, ids=lambda d: d.__qualname__)
 def test_member(obj):
     check_docstring(obj)
