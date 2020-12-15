@@ -45,7 +45,7 @@ from mktestdocs import check_docstring
 
 # Note the use of `__name__`, makes for pretty output
 @pytest.mark.parametrize('func', [roar, super_roar], ids=lambda d: d.__name__)
-def test_files_good(func):
+def test_docstring(func):
     check_docstring(obj=func)
 ```
 
