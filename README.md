@@ -58,6 +58,7 @@ from dinosaur import Dinosaur
 import pytest
 from mktestdocs import check_docstring, get_codeblock_members
 
+# This retreives all methods/properties with a docstring.
 members = get_codeblock_members(Dinosaur)
 
 # Note the use of `__qualname__`, makes for pretty output
