@@ -35,6 +35,7 @@ you get some unit-tests for free!
 
 <details>
     <summary><b>Details on `check_md_file`.</b></summary>
+    <br>
     Let's suppose that you have the following markdown file: 
 
     This is a code block
