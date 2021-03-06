@@ -33,6 +33,39 @@ This will take any codeblock that starts with *\`\`\`python* and run it, checkin
 for any errors that might happen. This means that if your docs contain asserts, that
 you get some unit-tests for free! 
 
+<details>
+    <summary><b>Details on `check_md_file`.</b></summary>
+    Let's suppose that you have the following markdown file: 
+
+    This is a code block
+
+    ```python
+    from operator import add
+    a = 1 
+    b = 2
+    ```
+
+    This code-block should run fine.
+
+    ```python
+    assert add(1, 2) == 3
+    ```
+
+Then in this case the second code-block depends on the first code-block. The standard settings of `check_md_file` assume that each code-block needs to run independantly. If you'd like to test markdown files with these sequential code-blocks be sure to set `memory=True`. 
+
+```python
+# Assume that cell-blocks are independant.
+check_docstring(fpath=fpath)
+
+# Assumes that cell-blocks depend on eachother.
+check_docstring(fpath=fpath, memory=True)
+```
+</details>
+<br>
+
+
+## Markdown in Docstrings
+
 You might also have docstrings written in markdown. Those can be easily checked
 as well. 
 
@@ -68,3 +101,5 @@ def test_member(obj):
 ```
 
 When you run these commands via `pytest --verbose` you should see informative test info being run. 
+
+If you're wondering why you'd want to write markdown in a docstring feel free to check out [mkdocstrings](https://github.com/mkdocstrings/mkdocstrings).
