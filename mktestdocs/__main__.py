@@ -82,13 +82,28 @@ def check_raw_string(raw, lang="python"):
             raise
 
 
-def check_md_file(fpath):
+def check_raw_file_full(raw, lang="python"):
+    all_code = ""
+    for b in grab_code_blocks(raw, lang=lang):
+        all_code = f"{all_code}\n{b}"
+    try:
+        exec(all_code, {"__MODULE__": "__main__"})
+    except Exception:
+        print(all_code)
+        raise
+    
+
+def check_md_file(fpath, memory=False):
     """
     Given a markdown file, parse the contents for python code blocks
     and check that each independant block does not cause an error.
 
     Arguments:
         fpath: path to markdown file
+        memory: wheather or not previous code-blocks should be remembered
     """
     text = pathlib.Path(fpath).read_text()
-    check_raw_string(text, lang="python")
+    if not memory:
+        check_raw_string(text, lang="python")
+    else:
+        check_raw_file_full(text, lang="python")
