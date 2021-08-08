@@ -33,10 +33,9 @@ This will take any codeblock that starts with *\`\`\`python* and run it, checkin
 for any errors that might happen. This means that if your docs contain asserts, that
 you get some unit-tests for free! 
 
-<details>
-    <summary><b>Details on `check_md_file`.</b></summary>
-    <br>
-    Let's suppose that you have the following markdown file: 
+## Multiple Code Blocks 
+
+Let's suppose that you have the following markdown file: 
 
     This is a code block
 
@@ -56,14 +55,11 @@ Then in this case the second code-block depends on the first code-block. The sta
 
 ```python
 # Assume that cell-blocks are independant.
-check_docstring(fpath=fpath)
+check_md_file(fpath=fpath)
 
 # Assumes that cell-blocks depend on eachother.
-check_docstring(fpath=fpath, memory=True)
+check_md_file(fpath=fpath, memory=True)
 ```
-</details>
-<br>
-
 
 ## Markdown in Docstrings
 
