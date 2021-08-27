@@ -6,7 +6,7 @@ Run pytest against markdown files/docstrings.
 
 # Installation 
 
-```python
+```
 pip install mktestdocs
 ```
 
