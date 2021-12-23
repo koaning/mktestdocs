@@ -51,10 +51,10 @@ Let's suppose that you have the following markdown file:
     assert add(1, 2) == 3
     ```
 
-Then in this case the second code-block depends on the first code-block. The standard settings of `check_md_file` assume that each code-block needs to run independantly. If you'd like to test markdown files with these sequential code-blocks be sure to set `memory=True`. 
+Then in this case the second code-block depends on the first code-block. The standard settings of `check_md_file` assume that each code-block needs to run independently. If you'd like to test markdown files with these sequential code-blocks be sure to set `memory=True`. 
 
 ```python
-# Assume that cell-blocks are independant.
+# Assume that cell-blocks are independent.
 check_md_file(fpath=fpath)
 
 # Assumes that cell-blocks depend on eachother.
