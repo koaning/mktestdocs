@@ -1,5 +1,5 @@
 black:
-	black memo tests setup.py
+	black mktestdocs tests setup.py
 
 test:
 	pytest

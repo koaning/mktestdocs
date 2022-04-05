@@ -91,7 +91,7 @@ def check_raw_file_full(raw, lang="python"):
     except Exception:
         print(all_code)
         raise
-    
+
 
 def check_md_file(fpath, memory=False):
     """
