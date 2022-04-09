@@ -3,6 +3,26 @@ import pathlib
 import textwrap
 
 
+def exec_python(source):
+    """Exec the python source given in a new module namespace
+
+    Does not return anything, but exceptions raised by the source
+    will propagate out unmodified
+    """
+    try:
+        exec(source, {"__MODULE__": "__main__"})
+    except Exception:
+        print(source)
+        raise
+
+
+executors = {
+    # default executor
+    "": exec_python,
+    "python": exec_python,
+}
+
+
 def get_codeblock_members(*classes):
     """
     Grabs the docstrings of any methods of any classes that are passed in.
@@ -61,49 +81,39 @@ def check_docstring(obj, lang=""):
     """
     Given a function, test the contents of the docstring.
     """
+    executor = executors[lang]
     for b in grab_code_blocks(obj.__doc__, lang=lang):
-        try:
-            exec(b, {"__MODULE__": "__main__"})
-        except Exception:
-            print(f"Error Encountered in `{obj.__name__}`. Caused by:\n")
-            print(b)
-            raise
+        executor(b)
 
 
 def check_raw_string(raw, lang="python"):
     """
     Given a raw string, test the contents.
     """
+    executor = executors[lang]
     for b in grab_code_blocks(raw, lang=lang):
-        try:
-            exec(b, {"__MODULE__": "__main__"})
-        except Exception:
-            print(b)
-            raise
+        executor(b)
 
 
 def check_raw_file_full(raw, lang="python"):
+    executor = executors[lang]
     all_code = ""
     for b in grab_code_blocks(raw, lang=lang):
         all_code = f"{all_code}\n{b}"
-    try:
-        exec(all_code, {"__MODULE__": "__main__"})
-    except Exception:
-        print(all_code)
-        raise
+    executor(all_code)
 
 
-def check_md_file(fpath, memory=False):
+def check_md_file(fpath, memory=False, lang="python"):
     """
     Given a markdown file, parse the contents for python code blocks
-    and check that each independant block does not cause an error.
+    and check that each independent block does not cause an error.
 
     Arguments:
         fpath: path to markdown file
-        memory: wheather or not previous code-blocks should be remembered
+        memory: whether or not previous code-blocks should be remembered
     """
     text = pathlib.Path(fpath).read_text()
     if not memory:
-        check_raw_string(text, lang="python")
+        check_raw_string(text, lang=lang)
     else:
-        check_raw_file_full(text, lang="python")
+        check_raw_file_full(text, lang=lang)
