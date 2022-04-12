@@ -1,6 +1,37 @@
 import inspect
 import pathlib
+import subprocess
 import textwrap
+
+
+_executors = {}
+
+
+def register_executor(lang, executor):
+    """Add a new executor for markdown code blocks
+
+    lang should be the tag used after the opening ```
+    executor should be a callable that takes one argument:
+        the code block found
+    """
+    _executors[lang] = executor
+
+
+def exec_bash(source):
+    """Exec the bash source given in a new subshell
+
+    Does not return anything, but if any command returns not-0 an error
+    will be raised
+    """
+    command = ["bash", "-e", "-u", "-c", source]
+    try:
+        subprocess.run(command, check=True)
+    except Exception:
+        print(source)
+        raise
+
+
+register_executor("bash", exec_bash)
 
 
 def exec_python(source):
@@ -16,11 +47,8 @@ def exec_python(source):
         raise
 
 
-executors = {
-    # default executor
-    "": exec_python,
-    "python": exec_python,
-}
+register_executor("", exec_python)
+register_executor("python", exec_python)
 
 
 def get_codeblock_members(*classes):
@@ -81,7 +109,7 @@ def check_docstring(obj, lang=""):
     """
     Given a function, test the contents of the docstring.
     """
-    executor = executors[lang]
+    executor = _executors[lang]
     for b in grab_code_blocks(obj.__doc__, lang=lang):
         executor(b)
 
@@ -90,13 +118,13 @@ def check_raw_string(raw, lang="python"):
     """
     Given a raw string, test the contents.
     """
-    executor = executors[lang]
+    executor = _executors[lang]
     for b in grab_code_blocks(raw, lang=lang):
         executor(b)
 
 
 def check_raw_file_full(raw, lang="python"):
-    executor = executors[lang]
+    executor = _executors[lang]
     all_code = ""
     for b in grab_code_blocks(raw, lang=lang):
         all_code = f"{all_code}\n{b}"

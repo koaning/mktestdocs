@@ -1,4 +1,5 @@
 from mktestdocs.__main__ import (
+    register_executor,
     check_codeblock,
     grab_code_blocks,
     check_docstring,
@@ -10,6 +11,7 @@ __version__ = "0.1.1"
 
 __all__ = [
     "__version__",
+    "register_executor",
     "check_codeblock",
     "grab_code_blocks",
     "check_docstring",
