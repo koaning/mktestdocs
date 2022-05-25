@@ -100,3 +100,73 @@ def test_member(obj):
 When you run these commands via `pytest --verbose` you should see informative test info being run. 
 
 If you're wondering why you'd want to write markdown in a docstring feel free to check out [mkdocstrings](https://github.com/mkdocstrings/mkdocstrings).
+
+## Bash Support
+
+Be default, bash code blocks are also supported. A markdown file that contains
+both python and bash code blocks can have each executed separately.
+
+    This will print the python version to the terminal
+
+    ```bash
+    python --version
+    ```
+
+    This will print the exact same version string
+
+    ```python
+    import sys
+
+    print(f"Python {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}")
+    ```
+
+This markdown could be fully tested like this
+
+```python
+import pathlib
+import pytest
+
+from mktestdocs import check_md_file
+
+@pytest.mark.parametrize('fpath', pathlib.Path("docs").glob("**/*.md"), ids=str)
+def test_python_examples(fpath):
+    check_md_file(fpath=fpath, lang="python")
+
+@pytest.mark.parametrize('fpath', pathlib.Path("docs").glob("**/*.md"), ids=str)
+def test_bash_examples(fpath):
+    check_md_file(fpath=fpath), lang="bash")
+```
+
+## Additional Language Support
+
+You can add support for languages other than python and bash by first
+registering a new executor for that language. The `register_executor` function
+takes a tag to specify the code block type supported, and a function that will
+be passed any code blocks found in markdown files.
+
+For example if you have a markdown file like this
+
+    This is an example REST response
+
+    ```json
+    {"body": {"results": ["spam", "eggs"]}, "errors": []}
+    ```
+
+You could create a json validator that tested the example was always valid json like this
+
+```python
+import json
+import pytest
+
+from mktestdocs import check_md_file, register_executor
+
+def parse_json(json_text):
+    json.loads(json_text)
+
+register_executor("json", parse_json)
+
+# Note the use of `str`, makes for pretty output
+@pytest.mark.parametrize('fpath', pathlib.Path("docs").glob("**/*.md"), ids=str)
+def test_files_good(fpath):
+    check_md_file(fpath=fpath)
+```
