@@ -1,7 +1,7 @@
 This is another test. 
 
 ```python
-a = 1 
+a = 1
 b = 2
 ```
 

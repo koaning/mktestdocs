@@ -2,7 +2,7 @@ This is another test.
 
 ```python
 from operator import add
-a = 1 
+a = 1
 b = 2
 ```
 
