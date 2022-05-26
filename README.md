@@ -41,7 +41,7 @@ Let's suppose that you have the following markdown file:
 
     ```python
     from operator import add
-    a = 1 
+    a = 1
     b = 2
     ```
 
@@ -54,10 +54,20 @@ Let's suppose that you have the following markdown file:
 Then in this case the second code-block depends on the first code-block. The standard settings of `check_md_file` assume that each code-block needs to run independently. If you'd like to test markdown files with these sequential code-blocks be sure to set `memory=True`. 
 
 ```python
-# Assume that cell-blocks are independent.
-check_md_file(fpath=fpath)
+import pathlib
 
-# Assumes that cell-blocks depend on eachother.
+from mktestdocs import check_md_file
+
+fpath = pathlib.Path("docs") / "multiple-code-blocks.md"
+
+try:
+    # Assume that cell-blocks are independent.
+    check_md_file(fpath=fpath)
+except NameError:
+    # But they weren't
+    pass
+
+# Assumes that cell-blocks depend on each other.
 check_md_file(fpath=fpath, memory=True)
 ```
 
@@ -88,7 +98,7 @@ from dinosaur import Dinosaur
 import pytest
 from mktestdocs import check_docstring, get_codeblock_members
 
-# This retreives all methods/properties with a docstring.
+# This retrieves all methods/properties with a docstring.
 members = get_codeblock_members(Dinosaur)
 
 # Note the use of `__qualname__`, makes for pretty output
@@ -100,3 +110,66 @@ def test_member(obj):
 When you run these commands via `pytest --verbose` you should see informative test info being run. 
 
 If you're wondering why you'd want to write markdown in a docstring feel free to check out [mkdocstrings](https://github.com/mkdocstrings/mkdocstrings).
+
+## Bash Support
+
+Be default, bash code blocks are also supported. A markdown file that contains
+both python and bash code blocks can have each executed separately.
+
+    This will print the python version to the terminal
+
+    ```bash
+    python --version
+    ```
+
+    This will print the exact same version string
+
+    ```python
+    import sys
+
+    print(f"Python {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}")
+    ```
+
+This markdown could be fully tested like this
+
+```python
+import pathlib
+
+from mktestdocs import check_md_file
+
+fpath = pathlib.Path("docs") / "bash-support.md"
+
+check_md_file(fpath=fpath, lang="python")
+check_md_file(fpath=fpath, lang="bash")
+```
+
+## Additional Language Support
+
+You can add support for languages other than python and bash by first
+registering a new executor for that language. The `register_executor` function
+takes a tag to specify the code block type supported, and a function that will
+be passed any code blocks found in markdown files.
+
+For example if you have a markdown file like this
+
+    This is an example REST response
+
+    ```json
+    {"body": {"results": ["spam", "eggs"]}, "errors": []}
+    ```
+
+You could create a json validator that tested the example was always valid json like this
+
+```python
+import json
+import pathlib
+
+from mktestdocs import check_md_file, register_executor
+
+def parse_json(json_text):
+    json.loads(json_text)
+
+register_executor("json", parse_json)
+
+check_md_file(fpath=pathlib.Path("docs") / "additional-language-support.md", lang="json")
+```

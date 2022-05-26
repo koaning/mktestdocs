@@ -7,7 +7,7 @@ Talk talk talk.
 Some more talk. 
 
 ```python
-import random 
+import random
 
 random.random()
 ```

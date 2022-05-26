@@ -1,6 +1,54 @@
 import inspect
 import pathlib
+import subprocess
 import textwrap
+
+
+_executors = {}
+
+
+def register_executor(lang, executor):
+    """Add a new executor for markdown code blocks
+
+    lang should be the tag used after the opening ```
+    executor should be a callable that takes one argument:
+        the code block found
+    """
+    _executors[lang] = executor
+
+
+def exec_bash(source):
+    """Exec the bash source given in a new subshell
+
+    Does not return anything, but if any command returns not-0 an error
+    will be raised
+    """
+    command = ["bash", "-e", "-u", "-c", source]
+    try:
+        subprocess.run(command, check=True)
+    except Exception:
+        print(source)
+        raise
+
+
+register_executor("bash", exec_bash)
+
+
+def exec_python(source):
+    """Exec the python source given in a new module namespace
+
+    Does not return anything, but exceptions raised by the source
+    will propagate out unmodified
+    """
+    try:
+        exec(source, {"__MODULE__": "__main__"})
+    except Exception:
+        print(source)
+        raise
+
+
+register_executor("", exec_python)
+register_executor("python", exec_python)
 
 
 def get_codeblock_members(*classes):
@@ -61,49 +109,54 @@ def check_docstring(obj, lang=""):
     """
     Given a function, test the contents of the docstring.
     """
+    if lang not in _executors:
+        raise LookupError(
+            f"{lang} is not a supported language to check\n"
+            "\tHint: you can add support for any language by using register_executor"
+        )
+    executor = _executors[lang]
     for b in grab_code_blocks(obj.__doc__, lang=lang):
-        try:
-            exec(b, {"__MODULE__": "__main__"})
-        except Exception:
-            print(f"Error Encountered in `{obj.__name__}`. Caused by:\n")
-            print(b)
-            raise
+        executor(b)
 
 
 def check_raw_string(raw, lang="python"):
     """
     Given a raw string, test the contents.
     """
+    if lang not in _executors:
+        raise LookupError(
+            f"{lang} is not a supported language to check\n"
+            "\tHint: you can add support for any language by using register_executor"
+        )
+    executor = _executors[lang]
     for b in grab_code_blocks(raw, lang=lang):
-        try:
-            exec(b, {"__MODULE__": "__main__"})
-        except Exception:
-            print(b)
-            raise
+        executor(b)
 
 
 def check_raw_file_full(raw, lang="python"):
+    if lang not in _executors:
+        raise LookupError(
+            f"{lang} is not a supported language to check\n"
+            "\tHint: you can add support for any language by using register_executor"
+        )
+    executor = _executors[lang]
     all_code = ""
     for b in grab_code_blocks(raw, lang=lang):
         all_code = f"{all_code}\n{b}"
-    try:
-        exec(all_code, {"__MODULE__": "__main__"})
-    except Exception:
-        print(all_code)
-        raise
-    
+    executor(all_code)
 
-def check_md_file(fpath, memory=False):
+
+def check_md_file(fpath, memory=False, lang="python"):
     """
     Given a markdown file, parse the contents for python code blocks
-    and check that each independant block does not cause an error.
+    and check that each independent block does not cause an error.
 
     Arguments:
         fpath: path to markdown file
-        memory: wheather or not previous code-blocks should be remembered
+        memory: whether or not previous code-blocks should be remembered
     """
     text = pathlib.Path(fpath).read_text()
     if not memory:
-        check_raw_string(text, lang="python")
+        check_raw_string(text, lang=lang)
     else:
-        check_raw_file_full(text, lang="python")
+        check_raw_file_full(text, lang=lang)
