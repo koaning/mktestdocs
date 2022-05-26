@@ -98,7 +98,7 @@ from dinosaur import Dinosaur
 import pytest
 from mktestdocs import check_docstring, get_codeblock_members
 
-# This retrieves all methods/properties with a docstring.
+# This retrieves all methods/properties that have a docstring.
 members = get_codeblock_members(Dinosaur)
 
 # Note the use of `__qualname__`, makes for pretty output
@@ -152,11 +152,13 @@ be passed any code blocks found in markdown files.
 
 For example if you have a markdown file like this
 
-    This is an example REST response
+````markdown
+This is an example REST response
 
-    ```json
-    {"body": {"results": ["spam", "eggs"]}, "errors": []}
-    ```
+```json
+{"body": {"results": ["spam", "eggs"]}, "errors": []}
+```
+````
 
 You could create a json validator that tested the example was always valid json like this
 
