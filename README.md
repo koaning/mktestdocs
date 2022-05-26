@@ -41,7 +41,7 @@ Let's suppose that you have the following markdown file:
 
     ```python
     from operator import add
-    a = 1 
+    a = 1
     b = 2
     ```
 
@@ -54,10 +54,20 @@ Let's suppose that you have the following markdown file:
 Then in this case the second code-block depends on the first code-block. The standard settings of `check_md_file` assume that each code-block needs to run independently. If you'd like to test markdown files with these sequential code-blocks be sure to set `memory=True`. 
 
 ```python
-# Assume that cell-blocks are independent.
-check_md_file(fpath=fpath)
+import pathlib
 
-# Assumes that cell-blocks depend on eachother.
+from mktestdocs import check_md_file
+
+fpath = pathlib.Path("docs") / "multiple-code-blocks.md"
+
+try:
+    # Assume that cell-blocks are independent.
+    check_md_file(fpath=fpath)
+except NameError:
+    # But they weren't
+    pass
+
+# Assumes that cell-blocks depend on each other.
 check_md_file(fpath=fpath, memory=True)
 ```
 
@@ -88,7 +98,7 @@ from dinosaur import Dinosaur
 import pytest
 from mktestdocs import check_docstring, get_codeblock_members
 
-# This retreives all methods/properties with a docstring.
+# This retrieves all methods/properties with a docstring.
 members = get_codeblock_members(Dinosaur)
 
 # Note the use of `__qualname__`, makes for pretty output
@@ -128,13 +138,13 @@ import pytest
 
 from mktestdocs import check_md_file
 
-@pytest.mark.parametrize('fpath', pathlib.Path("docs").glob("**/*.md"), ids=str)
-def test_python_examples(fpath):
+fpath = pathlib.Path("docs") / "bash-support.md"
+
+def test_python_examples():
     check_md_file(fpath=fpath, lang="python")
 
-@pytest.mark.parametrize('fpath', pathlib.Path("docs").glob("**/*.md"), ids=str)
-def test_bash_examples(fpath):
-    check_md_file(fpath=fpath), lang="bash")
+def test_bash_examples():
+    check_md_file(fpath=fpath, lang="bash")
 ```
 
 ## Additional Language Support
@@ -156,6 +166,8 @@ You could create a json validator that tested the example was always valid json 
 
 ```python
 import json
+import pathlib
+
 import pytest
 
 from mktestdocs import check_md_file, register_executor
@@ -165,8 +177,7 @@ def parse_json(json_text):
 
 register_executor("json", parse_json)
 
-# Note the use of `str`, makes for pretty output
-@pytest.mark.parametrize('fpath', pathlib.Path("docs").glob("**/*.md"), ids=str)
 def test_files_good(fpath):
+    fpath = pathlib.Path("docs") / "additional-language-support.md"
     check_md_file(fpath=fpath)
 ```
