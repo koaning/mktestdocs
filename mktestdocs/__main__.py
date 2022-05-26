@@ -109,6 +109,11 @@ def check_docstring(obj, lang=""):
     """
     Given a function, test the contents of the docstring.
     """
+    if lang not in _executors:
+        raise LookupError(
+            f"{lang} is not a supported language to check\n"
+            "\tHint: you can add support for any language by using register_executor"
+        )
     executor = _executors[lang]
     for b in grab_code_blocks(obj.__doc__, lang=lang):
         executor(b)
@@ -118,12 +123,22 @@ def check_raw_string(raw, lang="python"):
     """
     Given a raw string, test the contents.
     """
+    if lang not in _executors:
+        raise LookupError(
+            f"{lang} is not a supported language to check\n"
+            "\tHint: you can add support for any language by using register_executor"
+        )
     executor = _executors[lang]
     for b in grab_code_blocks(raw, lang=lang):
         executor(b)
 
 
 def check_raw_file_full(raw, lang="python"):
+    if lang not in _executors:
+        raise LookupError(
+            f"{lang} is not a supported language to check\n"
+            "\tHint: you can add support for any language by using register_executor"
+        )
     executor = _executors[lang]
     all_code = ""
     for b in grab_code_blocks(raw, lang=lang):
