@@ -134,17 +134,13 @@ This markdown could be fully tested like this
 
 ```python
 import pathlib
-import pytest
 
 from mktestdocs import check_md_file
 
 fpath = pathlib.Path("docs") / "bash-support.md"
 
-def test_python_examples():
-    check_md_file(fpath=fpath, lang="python")
-
-def test_bash_examples():
-    check_md_file(fpath=fpath, lang="bash")
+check_md_file(fpath=fpath, lang="python")
+check_md_file(fpath=fpath, lang="bash")
 ```
 
 ## Additional Language Support
@@ -168,8 +164,6 @@ You could create a json validator that tested the example was always valid json 
 import json
 import pathlib
 
-import pytest
-
 from mktestdocs import check_md_file, register_executor
 
 def parse_json(json_text):
@@ -177,7 +171,5 @@ def parse_json(json_text):
 
 register_executor("json", parse_json)
 
-def test_files_good(fpath):
-    fpath = pathlib.Path("docs") / "additional-language-support.md"
-    check_md_file(fpath=fpath)
+check_md_file(fpath=pathlib.Path("docs") / "additional-language-support.md", lang="json")
 ```
