@@ -12,10 +12,12 @@ pip install mktestdocs
 
 ## Usage 
 
-Let's say that you're using [mkdocs](https://squidfunk.github.io/mkdocs-material/getting-started/) for your documentation. Then you're 
-writing down markdown to explain how your python packages works. It'd be 
-great if you could run your unit tests against them. You can use this package
-to write unit-tests for that. 
+Let's say that you're using [mkdocs](https://squidfunk.github.io/mkdocs-material/getting-started/) 
+for your documentation. Then you're writing down markdown to explain how your Python packages work. 
+It'd be a shame if a codeblock had an error in it, so it'd be 
+great if you could run your unit tests against them. 
+
+This package allows you to do _just that_. Here's an example:
 
 ```python
 import pathlib
