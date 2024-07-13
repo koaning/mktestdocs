@@ -3,7 +3,6 @@ import pathlib
 import subprocess
 import textwrap
 
-
 _executors = {}
 
 
@@ -77,7 +76,7 @@ def check_codeblock(block, lang="python"):
     """
     first_line = block.split("\n")[0]
     if lang:
-        if first_line[3:] != lang:
+        if first_line.strip()[3:] != lang and first_line[3:] != lang:
             return ""
     return "\n".join(block.split("\n")[1:])
 
@@ -95,7 +94,7 @@ def grab_code_blocks(docstring, lang="python"):
     block = ""
     codeblocks = []
     for idx, line in enumerate(docstring.split("\n")):
-        if line.startswith("```"):
+        if line.strip().startswith("```"):
             if in_block:
                 codeblocks.append(check_codeblock(block, lang=lang))
                 block = ""
