@@ -17,19 +17,7 @@ class BadClass:
         pass
 
 
-class Dinosaur:
-    """This is a dino.
-
-    ```python
-    from dinosaur import Dinosaur
-
-    assert False, "this should fail."
-    ```
-    """
-    def __init__(self) -> None:
-        pass
-
-bad_members = get_codeblock_members(Dinosaur)
+bad_members = get_codeblock_members(BadClass)
 
 def test_grab_bad_methods():
     assert len(bad_members) == 1
