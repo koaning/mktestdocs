@@ -76,7 +76,7 @@ def check_codeblock(block, lang="python"):
     """
     first_line = block.split("\n")[0]
     if lang:
-        if first_line.strip()[3:] != lang and first_line[3:] != lang:
+        if first_line[3:] != lang:
             return ""
     return "\n".join(block.split("\n")[1:])
 
@@ -89,12 +89,13 @@ def grab_code_blocks(docstring, lang="python"):
         docstring: the docstring to analyse
         lang: if not None, the language that is assigned to the codeblock
     """
+    docstring = format_docstring(docstring)
     docstring = textwrap.dedent(docstring)
     in_block = False
     block = ""
     codeblocks = []
     for idx, line in enumerate(docstring.split("\n")):
-        if line.strip().startswith("```"):
+        if line.startswith("```"):
             if in_block:
                 codeblocks.append(check_codeblock(block, lang=lang))
                 block = ""
@@ -103,6 +104,11 @@ def grab_code_blocks(docstring, lang="python"):
             block += line + "\n"
     return [c for c in codeblocks if c != ""]
 
+def format_docstring(docstring):
+    """Formats docstring to be able to successfully go through dedent."""
+    if docstring[:1] != "\n":
+        return f"\n    {docstring}"
+    return docstring
 
 def check_docstring(obj, lang=""):
     """
