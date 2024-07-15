@@ -27,7 +27,7 @@ def test_docstring_not_formatted():
 # The docstring of the second class starts like
 # """
 # Some class ...
-# The tests are checking that regarddless of how the class docstring starts we should always be able to read the tests
+# The tests are checking that regardless of how the class docstring starts we should always be able to read the tests
 class BadClass:
     """Some class with a header and a code block.
 
