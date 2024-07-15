@@ -3,7 +3,6 @@ import pathlib
 import subprocess
 import textwrap
 
-
 _executors = {}
 
 
@@ -90,6 +89,7 @@ def grab_code_blocks(docstring, lang="python"):
         docstring: the docstring to analyse
         lang: if not None, the language that is assigned to the codeblock
     """
+    docstring = format_docstring(docstring)
     docstring = textwrap.dedent(docstring)
     in_block = False
     block = ""
@@ -104,6 +104,11 @@ def grab_code_blocks(docstring, lang="python"):
             block += line + "\n"
     return [c for c in codeblocks if c != ""]
 
+def format_docstring(docstring):
+    """Formats docstring to be able to successfully go through dedent."""
+    if docstring[:1] != "\n":
+        return f"\n    {docstring}"
+    return docstring
 
 def check_docstring(obj, lang=""):
     """
