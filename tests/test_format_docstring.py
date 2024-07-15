@@ -52,7 +52,6 @@ class BadClassNewLine:
         pass
 
 
-bad_members = get_codeblock_members(BadClass)
 
 @pytest.mark.parametrize("cls", [BadClass, BadClassNewLine], ids=lambda d: d.__qualname__)
 def test_grab_bad_methods(cls):
