@@ -95,14 +95,14 @@ def grab_code_blocks(docstring, lang="python"):
     block = ""
     codeblocks = []
     for idx, line in enumerate(docstring.split("\n")):
-        if line.startswith("```"):
+        if "```" in line:
             if in_block:
                 codeblocks.append(check_codeblock(block, lang=lang))
                 block = ""
             in_block = not in_block
         if in_block:
             block += line + "\n"
-    return [c for c in codeblocks if c != ""]
+    return [textwrap.dedent(c) for c in codeblocks if c != ""]
 
 def format_docstring(docstring):
     """Formats docstring to be able to successfully go through dedent."""
