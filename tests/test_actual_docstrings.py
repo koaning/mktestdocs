@@ -43,12 +43,12 @@ def admonition_edge_cases():
     """
     !!! note
 
-    All cells of a table are initialized with an empty string. Therefore, to delete the content of a cell,
-    you need to assign an empty string, i.e. `''`. For instance, to delete the first row after the header:
+        All cells of a table are initialized with an empty string. Therefore, to delete the content of a cell,
+        you need to assign an empty string, i.e. `''`. For instance, to delete the first row after the header:
 
-    ```python
-    table[1] = ('', '', '')
-    ```"""
+        ```python
+        assert 1 + 2 == 3
+        ```"""
     pass
 
 def adminition_edge_case_bad():

@@ -75,16 +75,3 @@ def test_override_executor(temp_executors):
     register_executor("python", hijack)
     check_md_file(fpath, lang="python")
     hijack.assert_called()
-
-
-def test_admonitions_edge_cases():
-    """Test that we can handle the edge cases of admonitions."""
-    example = """!!! note
-
-    All cells of a table are initialized with an empty string. Therefore, to delete the content of a cell,
-    you need to assign an empty string, i.e. `''`. For instance, to delete the first row after the header:
-
-    ```python
-    table[1] = ('', '', '')
-    ```"""
-    check_md_file(example, lang="python")
