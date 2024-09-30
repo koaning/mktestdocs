@@ -16,43 +16,57 @@ def foobar_good(a, b):
     assert 1 + 2 == 3
     ```
     """
-    return a + b
+    pass
 
 
 def foobar_also_good(a, b):
     """
-    Returns a + b.
-
-    Examples:
-
     ```python
     import random
 
     assert random.random() < 10
     ```
     """
-    return a + b
+    pass
 
 
 def foobar_bad(a, b):
     """
-    Returns a + b.
-
-    Examples:
-
     ```python
     assert foobar(1, 2) == 4
     ```
     """
-    return a + b
+    pass
 
 
-@pytest.mark.parametrize("func", [foobar_good, foobar_also_good])
+def admonition_edge_cases():
+    """
+    !!! note
+
+        All cells of a table are initialized with an empty string. Therefore, to delete the content of a cell,
+        you need to assign an empty string, i.e. `''`. For instance, to delete the first row after the header:
+
+        ```python
+        assert 1 + 2 == 3
+        ```"""
+    pass
+
+def adminition_edge_case_bad():
+    """Test that we can handle the edge cases of admonitions."""
+    example = """!!! note
+
+    Another one. 
+    ```python
+    assert 1 + 2 == 4
+    ```"""
+    pass
+
+@pytest.mark.parametrize("func", [foobar_good, foobar_also_good, admonition_edge_cases])
 def test_base_docstrings(func):
     check_docstring(func)
 
 
-@pytest.mark.parametrize("func", [foobar_bad])
+@pytest.mark.parametrize("func", [foobar_bad, adminition_edge_case_bad])
 def test_base_docstrings_bad(func, capsys):
     with pytest.raises(Exception):
         check_docstring(func)
