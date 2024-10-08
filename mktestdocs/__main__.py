@@ -40,7 +40,7 @@ def exec_python(source):
     will propagate out unmodified
     """
     try:
-        exec(source, {"__MODULE__": "__main__"})
+        exec(source, {"__name__": "__main__"})
     except Exception:
         print(source)
         raise
