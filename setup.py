@@ -11,4 +11,6 @@ setup(
     extras_require={
         "test": test_packages,
     },
+    license="Apache Software License 2.0", 
+    license_files=["LICENSE"]
 )
