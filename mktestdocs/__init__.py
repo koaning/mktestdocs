@@ -7,7 +7,7 @@ from mktestdocs.__main__ import (
     get_codeblock_members,
 )
 
-__version__ = "0.2.3"
+__version__ = "0.2.4"
 
 __all__ = [
     "__version__",
