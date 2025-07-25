@@ -7,6 +7,7 @@ test:
 check: black test
 
 install:
+	uv pip install pytest
 	uv pip install -e ".[test]"
 
 pypi:
