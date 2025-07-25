@@ -7,9 +7,8 @@ test:
 check: black test
 
 install:
-	python -m pip install -e ".[test]"
+	uv pip install -e ".[test]"
 
 pypi:
-	python setup.py sdist
-	python setup.py bdist_wheel --universal
-	twine upload dist/*
+	uv build
+	uv publish
