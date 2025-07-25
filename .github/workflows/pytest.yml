@@ -27,4 +27,4 @@ jobs:
         python -m pip install --upgrade uv
         uv venv
         make install
-        pytest
+        uv run pytest
