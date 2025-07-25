@@ -1,4 +1,4 @@
-from mktestdocs.__main__ import (
+from .__main__ import (
     register_executor,
     check_codeblock,
     grab_code_blocks,
@@ -7,10 +7,7 @@ from mktestdocs.__main__ import (
     get_codeblock_members,
 )
 
-__version__ = "0.2.4"
-
 __all__ = [
-    "__version__",
     "register_executor",
     "check_codeblock",
     "grab_code_blocks",
