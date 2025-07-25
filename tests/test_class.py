@@ -60,12 +60,27 @@ class Dinosaur:
         """
         return self.name
 
+    def hfdocs_style(self, value):
+        """
+        Returns value
+
+        Example:
+
+            ```python
+            from dinosaur import Dinosaur
+
+            dino = Dinosaur()
+            assert dino.a(1) == 1
+            ```
+        """
+        return value
+
 
 members = get_codeblock_members(Dinosaur)
 
 
 def test_grab_methods():
-    assert len(get_codeblock_members(Dinosaur)) == 4
+    assert len(get_codeblock_members(Dinosaur)) == 5
 
 
 @pytest.mark.parametrize("obj", members, ids=lambda d: d.__qualname__)
