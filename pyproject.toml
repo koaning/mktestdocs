@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mktestdocs"
-version = "0.2.4"
+version = "0.2.5"
 description = "A tool for testing markdown documentation"
 readme = "README.md"
 license = {text = "MIT"}
