@@ -50,7 +50,7 @@ register_executor("", exec_python)
 register_executor("python", exec_python)
 
 
-def get_codeblock_members(*classes):
+def get_codeblock_members(*classes, lang="python"):
     """
     Grabs the docstrings of any methods of any classes that are passed in.
     """
@@ -61,7 +61,7 @@ def get_codeblock_members(*classes):
         for name, member in inspect.getmembers(cl):
             if member.__doc__:
                 results.append(member)
-    return [m for m in results if len(grab_code_blocks(m.__doc__)) > 0]
+    return [m for m in results if len(grab_code_blocks(m.__doc__, lang=lang)) > 0]
 
 
 def check_codeblock(block, lang="python"):
@@ -76,7 +76,7 @@ def check_codeblock(block, lang="python"):
     """
     first_line = block.split("\n")[0]
     if lang:
-        if first_line[3:] != lang:
+        if first_line.lstrip()[3:] != lang:
             return ""
     return "\n".join(block.split("\n")[1:])
 
@@ -104,11 +104,13 @@ def grab_code_blocks(docstring, lang="python"):
             block += line + "\n"
     return [textwrap.dedent(c) for c in codeblocks if c != ""]
 
+
 def format_docstring(docstring):
     """Formats docstring to be able to successfully go through dedent."""
     if docstring[:1] != "\n":
         return f"\n    {docstring}"
     return docstring
+
 
 def check_docstring(obj, lang=""):
     """
