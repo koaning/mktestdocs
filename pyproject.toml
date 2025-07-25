@@ -12,7 +12,7 @@ requires-python = ">=3.8"
 dependencies = []
 
 [project.optional-dependencies]
-test = ["pytest==8.4.1"]
+test = ["pytest"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
