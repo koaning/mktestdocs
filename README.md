@@ -50,7 +50,7 @@ Let's suppose that you have the following markdown file:
     This code-block should run fine.
 
     ```python
-    assert add(1, 2) == 3
+    assert add(a, b) == 3
     ```
 
 Then in this case the second code-block depends on the first code-block. The standard settings of `check_md_file` assume that each code-block needs to run independently. If you'd like to test markdown files with these sequential code-blocks be sure to set `memory=True`. 
